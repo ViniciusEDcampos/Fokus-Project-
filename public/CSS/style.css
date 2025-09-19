@@ -1,0 +1,62 @@
+@import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+
+/* reset na página */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;  
+    font-family: "Oswald", "Playfair Display", "Poppins", serif;
+    /* formatação do menu <ul> */
+    list-style: none;
+    text-decoration: none;
+}
+
+  body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  display: block;
+  opacity: 0.25;
+  animation: flutuar infinite ease-in-out;
+}
+
+@keyframes flutuar {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -20px) rotate(90deg);
+  }
+  50% {
+    transform: translate(-20px, -40px) rotate(180deg);
+  }
+  75% {
+    transform: translate(20px, -20px) rotate(270deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+.conteudo {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 50px;
+}
