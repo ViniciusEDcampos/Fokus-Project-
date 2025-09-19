@@ -1,82 +1,71 @@
-
 <?php
 session_start();
-include "../config/db.php"; 
+ini_set('display_errors',1); error_reporting(E_ALL);
+require __DIR__ . '/../config/db.php'; // expõe $conn (MySQLi)
 
 $erro = "";
 
-// Se o formulário foi enviado
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $_POST['email'] ?? '';
-    $senha = $_POST['senha'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $email = strtolower(trim($_POST['email'] ?? ''));
+  $senha = (string)($_POST['senha'] ?? '');
 
-    $sql = "SELECT * FROM usuarios WHERE email = ?";
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $erro = "E-mail inválido.";
+  } elseif ($senha === '') {
+    $erro = "Senha é obrigatória.";
+  } else {
+    $sql  = "SELECT id_usuario AS id, nome, email, senha FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $res = $stmt->get_result();
 
-    if ($result->num_rows === 1) {
-        $usuario = $result->fetch_assoc();
-
-        if (password_verify($senha, $usuario['senha'])) {
-            $_SESSION['usuario'] = $usuario['nome'];
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $erro = "E-mail ou senha incorretos!";
-        }
-    } else {
-        $erro = "E-mail ou senha incorretos!";
+    if ($res && $res->num_rows === 1) {
+      $u = $res->fetch_assoc();
+      // COMPARAÇÃO EM TEXTO PURO (inseguro)
+      if (hash_equals((string)$u['senha'], $senha)) {
+        $_SESSION['id_usuario']   = (int)$u['id'];
+        $_SESSION['usuario_nome'] = $u['nome'];
+        header("Location: dashboard.php");  // ajuste se necessário
+        exit;
+      }
     }
+    $erro = "E-mail ou senha incorretos!";
+  }
 }
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Fokus - Login</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/login.css">
+  <meta charset="UTF-8" />
+  <title>Fokus - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- ajuste o caminho do CSS: se seus arquivos estão em /public/css -->
+  <link rel="stylesheet" href="/public/css/login.css" />
 </head>
-
 <body>
-    <main>
-        <div class="login-wrapper">
-            <div class="card p-4 shadow-lg login-card">
-                <h2 class="text-center mb-4">Login</h2>
+  <main class="container py-5">
+    <div class="card p-4 shadow-lg mx-auto" style="max-width:400px;">
+      <h2 class="text-center mb-4">Login</h2>
 
-                <!-- Envia para valida.php -->
-                <form action="valida.php" method="POST">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">E-mail</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fi fi-rs-user"></i></span>
-                            <input type="email" id="email" name="email" class="form-control" required>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Senha</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fi fi-rs-lock"></i></span>
-                            <input type="password" id="password" name="senha" class="form-control" required>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                </form>
-                <?php if (isset($_SESSION['erro'])): ?>
-                    <p class="text-danger text-center mt-3">
-                        <?= $_SESSION['erro'];
-                        unset($_SESSION['erro']); ?>
-                    </p>
-                <?php endif; ?>
-            </div>
+      <form method="POST" action="">
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail</label>
+          <input type="email" id="email" name="email" class="form-control" required />
         </div>
-    </main>
-</body>
 
+        <div class="mb-3">
+          <label for="senha" class="form-label">Senha</label>
+          <input type="password" id="senha" name="senha" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+      </form>
+
+      <?php if (!empty($erro)): ?>
+        <div class="alert alert-danger text-center mt-3"><?= htmlspecialchars($erro) ?></div>
+      <?php endif; ?>
+    </div>
+  </main>
+</body>
 </html>

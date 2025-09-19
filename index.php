@@ -20,8 +20,9 @@
 
       <!-- Botões -->
       <div class="d-flex gap-3 justify-content-center">
-        <a href="cadastro.php" class="btn btn-success btn-lg px-4">Cadastrar</a>
+        <a href="/src/views/cadastro.php" class="btn btn-success btn-lg px-4">Cadastrar</a>
         <a href="/src/views/login.php" class="btn btn-primary btn-lg px-4">Login</a>
+          <a href="/src/views/ranking.php" class="btn btn-primary btn-lg px-4">hanking</a>
       </div>
     </div>
   </section>
