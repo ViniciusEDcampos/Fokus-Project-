@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('tarefas-alta').textContent = altaPrioridade;
   }
  
-  // ====== Listeners ======
+  
   // Botão adicionar (evita submit do form)
   $addBtn.addEventListener('click', (e) => addTask(e));
  
