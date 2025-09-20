@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Estado de filtros avançados
   let adv = { materia: '', data: '', tempoMax: null };
  
-  // ====== Persistência ======
+  // Salvar no localstorage 
   function save() {
     localStorage.setItem('fokusTasks', JSON.stringify(tasks));
   }
  
-  // ====== Toast ======
+  // Mensagem Para o usuario
   function showToast(msgText, color) {
     const msg = document.createElement('div');
     msg.textContent = msgText;
@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         (t.materia && t.materia.toLowerCase().includes(adv.materia.toLowerCase()));
  
       const dataOk = !adv.data || t.date === adv.data;
- 
       const tempoOk = adv.tempoMax == null || (typeof t.time === 'number' && t.time <= adv.tempoMax);
  
       return statusOk && priorityOk && materiaOk && dataOk && tempoOk;
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateProgress();
   }
  
-  // ====== Criar ======
+  //  Criar task 
   function addTask(e) {
     e?.preventDefault(); // evita submit do form
     const text = ($taskInput?.value || '').trim();
@@ -145,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Tarefa adicionada ✅', 'green');
   }
  
-  // ====== Status ======
+  // Status da Tarefa
   window.toggleComplete = function(id) {
     const t = tasks.find(t => t.id === id);
     if (t) {
@@ -156,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
  
-  // ====== Remover ======
+  // Remover tarefas
   window.deleteTask = function(id) {
     tasks = tasks.filter(t => t.id !== id);
     save();
@@ -164,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Tarefa removida 🗑️', 'red');
   };
  
-  // ====== Editar inline ======
+  // Editar tarefa
   window.editTaskInline = function(id) {
     const li = $taskList.querySelector(`li[data-id="${id}"]`);
     if (!li) return;
@@ -270,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
  
-  // ====== Progresso e contadores ======
+  // Progresso e contadores
   function updateProgress() {
     const total = tasks.length;
     const done = tasks.filter(t => t.completed).length;

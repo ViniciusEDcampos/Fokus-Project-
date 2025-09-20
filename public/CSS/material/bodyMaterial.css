@@ -67,6 +67,32 @@ lii:hover{
   color: red;
 }
 
+/* modo escuro */
+
+.dark-mode .background{
+   background-color: #1f1f1f;
+}
+
+
+.dark-mode input{
+  background-color: #383434;
+  color: white;
+}
+
+
+.dark-mode input::placeholder{
+  background-color: #383434;
+  color: white;
+}
+
+.dark-mode input:focus {
+  background-color: #383434;
+  color: white;            
+  border: 1px solid #888;  
+  outline: none;           
+}
+
+
 
 
 
