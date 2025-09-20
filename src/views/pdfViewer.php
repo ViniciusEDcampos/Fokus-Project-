@@ -23,7 +23,6 @@
 <body>
 
        <div class="background"></div>
-
        <?php include __DIR__ . "/layout/header.php"; ?>
 
  <main class="container-principal">
