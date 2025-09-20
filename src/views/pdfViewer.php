@@ -58,7 +58,7 @@
 <script src="/src/js/background.js"></script>
 <script src="/src/js/todolist.js"></script>
 <script src="/src/js/pdfViewer.js"></script>
-<script src="/src/js/script.js"></script>
+<script src="/src/js/darkTheme.js"></script>
 
     
 </body>

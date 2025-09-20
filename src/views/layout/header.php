@@ -20,9 +20,9 @@
       <ul class="navmenu">
         <li class="nav-item"><a href="#"><i class="fi fi-rs-home"></i> Inicio</a></li>
         <li class="nav-item"><a href="#"><i class="fi fi-rr-alarm-clock"></i> Cronometro</a></li>
-        <li class="nav-item"><a href="index.html"><i class="fi fi-rs-edit"></i> Tarefas</a></li>
+        <li class="nav-item"><a href="/src/views/tarefas.php"><i class="fi fi-rs-edit"></i> Tarefas</a></li>
         <li class="nav-item"><a href="#"><i class="fi fi-rr-trophy"></i> Ranking</a></li> 
-        <li class="nav-item"><a href="Material.html"><i class="fi fi-rs-document"></i> Material</a></li>
+        <li class="nav-item"><a href="/src/views/pdfViewer.php"><i class="fi fi-rs-document"></i> Material</a></li>
         <li class="nav-item"><a href="#"><i class="fi fi-rr-chat-arrow-grow"></i> Andamento</a></li>
       </ul>
 
