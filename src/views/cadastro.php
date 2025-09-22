@@ -27,13 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $erro = "E-mail já cadastrado!";
         } else {
             // gera hash seguro da senha
-            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+           
 
             // insere no banco
             $sql = "INSERT INTO usuarios (nome, email, senha, datainicio) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $dataHoje = date("Y-m-d");
-            $stmt->bind_param("ssss", $nome, $email, $senhaHash, $dataHoje);
+            $stmt->bind_param("ssss", $nome, $email, $senha, $dataHoje);
 
             if ($stmt->execute()) {
                 $sucesso = "Cadastro realizado com sucesso! Agora você pode fazer login.";
