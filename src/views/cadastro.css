@@ -1,0 +1,128 @@
+main {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  position: relative;
+  z-index: 1;
+}
+
+header, nav {
+  position: relative;
+  z-index: 2;
+}
+
+.cadastro-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem; /* espaçamento lateral em telas pequenas */
+}
+
+.cadastro-card {
+  max-width: 720px; /* desktop */
+  width: 100%;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300, #ddd);
+  position: relative;
+  z-index: 2;
+  padding: 2.5rem;
+}
+
+.cadastro-card h2 {
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--color-primary-700, #0077ff);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.input-group-text {
+  background-color: var(--color-neutral-100, #f0f0f0);
+  border: none;
+  border-right: 1px solid var(--color-neutral-300, #ddd);
+}
+
+.form-control {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  border-radius: 0 8px 8px 0;
+  border: 1px solid var(--color-neutral-300, #ddd);
+  padding: 14px;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--color-primary-600, #0077ff);
+  box-shadow: 0 0 0 0.2rem rgba(0, 119, 255, 0.25);
+}
+
+.btn-primary {
+  background-color: var(--color-primary-600, #0077ff);
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-700, #005fcc);
+}
+
+.cadastro-card a {
+  color: var(--color-primary-700, #0077ff);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.cadastro-card a:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- RESPONSIVIDADE ---------------- */
+@media (max-width: 768px) {
+  .cadastro-card {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .cadastro-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-control {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cadastro-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .cadastro-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-control {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
