@@ -1,9 +1,10 @@
 <?php
-include "./src/config/db.php";
+require "./src/config/db.php";
+ 
 
 $sql = "SHOW TABLES";
 $result = $conn->query($sql);
-
+ 
 if ($result) {
     echo "<h2>Conexão bem-sucedida com o banco <b>$db</b>!</h2>";
     echo "<p>Tabelas encontradas:</p><ul>";
@@ -15,3 +16,4 @@ if ($result) {
     echo "Conexão feita, mas não consegui listar as tabelas.";
 }
 ?>
+ 

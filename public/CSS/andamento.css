@@ -1,0 +1,253 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #fff;
+  --line: #e5e7eb;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --success: #22c55e;
+  --gray: #9ca3af;
+  --shadow: 0 4px 14px rgba(0,0,0,0.08);
+  --radius: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar .logo {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+nav a {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+  transition: 0.3s;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius);
+}
+nav a:hover,
+nav a.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.avatar {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.5rem;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.meta-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* TABS */
+.tabs button {
+  border: none;
+  background: var(--bg);
+  padding: 0.4rem 0.8rem;
+  margin-left: 0.4rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: 0.3s;
+}
+.tabs button.active,
+.tabs button:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.progress-bar {
+  background: #e5e7eb;
+  border-radius: 8px;
+  height: 20px;
+  overflow: hidden;
+  margin: 10px 0;
+  position: relative;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: #2563eb; /* azul */
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 8px;
+  transition: width 0.4s ease;
+}
+
+
+
+
+.list .item {
+  margin-bottom: 12px;
+}
+
+.list .item span:first-child {
+  font-weight: 600;
+  min-width: 40px;
+  display: inline-block;
+}
+
+.bar {
+  background: #e5e7eb;
+  border-radius: 6px;
+  height: 12px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.bar.green span { background: #22c55e; } /* verde */
+.bar.gray span { background: #9ca3af; }  /* cinza */
+
+/* KPI */
+.kpis {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.kpi {
+  text-align: center;
+}
+.kpi strong {
+  display: block;
+  font-size: 1.2rem;
+}
+
+/* LISTAS */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.item span {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.bar {
+  height: 10px;
+  background: var(--line);
+  border-radius: 999px;
+  width: 100%;
+  margin-top: 0.3rem;
+  overflow: hidden;
+}
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+.bar.green span {
+  background: var(--success);
+}
+.bar.gray span {
+  background: var(--gray);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.highlight {
+  text-align: center;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* DARK THEME */
+body.dark {
+  --bg: #1f2937;
+  --card: #111827;
+  --line: #374151;
+  --text: #f9fafb;
+  --muted: #9ca3af;
+  --shadow: 0 4px 16px rgba(0,0,0,0.6);
+}

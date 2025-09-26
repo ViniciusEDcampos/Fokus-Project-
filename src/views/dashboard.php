@@ -33,7 +33,7 @@ $primeiroNome = htmlspecialchars($primeiroNome, ENT_QUOTES, 'UTF-8');
 
 require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
 /* === HORAS ESTUDADAS HOJE === */
-$sql = "SELECT SUM(duracao) AS total_min 
+$sql = "SELECT SUM(duracao_segundos) AS total_min 
         FROM sessoes_estudo 
         WHERE id_usuario = ? AND DATE(data_hora) = CURDATE()";
 $stmt = $conn->prepare($sql);
@@ -56,7 +56,7 @@ $tarefasConcluidas = $res['concluidas'] ?? 0;
 $tarefasTotais     = $res['total'] ?? 0;
 
 /* === ÚLTIMAS SESSÕES DE ESTUDO === */
-$sql = "SELECT materia, duracao, data_hora
+$sql = "SELECT materia, duracao_segundos, data_hora
         FROM sessoes_estudo 
         WHERE id_usuario = ?
         ORDER BY data_hora DESC 
@@ -85,13 +85,21 @@ $conquistas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fokus - Início</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/public/css/dashbord.css">
+  <link rel="stylesheet" href="/public/CSS/dashbord.css">
+  <link rel="stylesheet" href="/public/CSS/header/header.css">
+  <link rel="stylesheet" href="/public//CSS/style.css">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+
 </head>
 <body>
-
-</header>
-
-<main class="container">
+<?php include __DIR__ . "/layout/header.php"; ?>
+<main class="container" style="margin-top:100px">
   <h1>Bem-vindo de volta, <span style="color:#2563eb;">
     <?php echo $primeiroNome; ?>
   </span>!</h1>
@@ -110,7 +118,7 @@ $conquistas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <h2>Meta Semanal</h2>
     <p>Progresso da sua meta de 30 horas por semana</p>
     <?php 
-      $sql = "SELECT SUM(duracao) AS total_min 
+      $sql = "SELECT SUM(duracao_segundos) AS total_min 
               FROM sessoes_estudo 
               WHERE id_usuario = ? 
               AND YEARWEEK(data_hora, 1) = YEARWEEK(CURDATE(), 1)";
@@ -145,7 +153,7 @@ $conquistas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
           <li>📘 <?php echo htmlspecialchars($u['materia']); ?> 
             <span>
               <?php 
-                echo floor($u['duracao']/60)."h ".($u['duracao']%60)."min";
+                echo floor($u['duracao_segundos']/60)."h ".($u['duracao_segundos']%60)."min";
               ?>
             </span>
           </li>
@@ -170,13 +178,15 @@ $conquistas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
     <section class="card">
       <h2>Ações Rápidas</h2>
-      <button class="btn blue">⏱ Iniciar Cronômetro</button>
-      <button class="btn green">➕ Adicionar Tarefa</button>
-      <button class="btn purple">📊 Ver Progresso</button>
+     <a href="/src/views/cronometro.php"><button class="btn blue">⏱ Iniciar Cronômetro</button></a>
+      <a href="/src/views/tarefas.php"><button class="btn green">➕ Adicionar Tarefa</button></a>
+    <a href="/src/views/andamento.php"> <button class="btn purple">📊 Ver Progresso</button></a>
     </section>
   </div>
 </main>
-
+ <?php include __DIR__ . "/layout/footer.php"; ?>
 <script src="script.js"></script>
+<script src="/src/js/background.js"></script>
 </body>
+
 </html>
