@@ -26,9 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($check->num_rows > 0) {
             $erro = "E-mail já cadastrado!";
         } else {
-            // gera hash seguro da senha
-           
-
             // insere no banco
             $sql = "INSERT INTO usuarios (nome, email, senha, datainicio) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
@@ -50,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <meta charset="UTF-8">
   <title>Fokus - Cadastro</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./cadastro.css">
+  <link rel="stylesheet" href="/public/CSS/cadastro.css">
 </head>
 <body>
   <main class="container py-5">

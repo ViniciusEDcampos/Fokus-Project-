@@ -1,3 +1,38 @@
+ 
+ <?php
+session_start();
+require __DIR__ . "/../config/db.php";
+
+/* 1) Exigir login */
+if (empty($_SESSION['id_usuario'])) {
+  header('Location: /src/views/login.php');
+  exit;
+}
+
+/* 2) Pegar id do usuário da sessão */
+$idUsuario = (int) $_SESSION['id_usuario'];
+
+/* 3) Nome do usuário: sessão -> banco -> fallback */
+$nome = $_SESSION['user_name'] ?? '';
+if ($nome === '') {
+  $stmt = $conn->prepare("SELECT nome FROM usuarios WHERE id_usuario = ? LIMIT 1");
+  $stmt->bind_param("i", $idUsuario);
+  $stmt->execute();
+  $nome = $stmt->get_result()->fetch_column() ?: 'Usuário';
+}
+
+/* 4) Primeiro nome bonito (com acentos) */
+$partes = preg_split('/\s+/', trim($nome));
+$primeiroNome = $partes[0] ?? 'Usuário';
+if (function_exists('mb_convert_case')) {
+  $primeiroNome = mb_convert_case($primeiroNome, MB_CASE_TITLE, 'UTF-8');
+} else {
+  $primeiroNome = ucwords(strtolower($primeiroNome));
+}
+$primeiroNome = htmlspecialchars($primeiroNome, ENT_QUOTES, 'UTF-8');
+
+require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,6 +48,8 @@
 <link rel="stylesheet" href="/public/CSS/pdfViewer/pdfViewer.css">
 <link rel="stylesheet" href="/public/CSS/header/header.css">
 <link rel="stylesheet" href="/public/CSS/style.css">
+<link rel="stylesheet" href="/public/CSS/footer/footer.css">
+
 
 <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -23,11 +60,11 @@
 </head>
 <body>
  
-       <div class="background"></div>
+     <div class="background"></div>
     
-          <?php include __DIR__ . "/layout/header.php"; ?>
+    <?php include __DIR__ . "/layout/header.php"; ?>
  
- <main class="container-principal">
+    <main class="container-principal flex-fill">
     <section id="home" class="container">
       <!-- wrapper central para não ficar colado na borda -->
       <div class="page-inner">
@@ -35,7 +72,7 @@
           <h1><strong>Gerenciador de Tarefas</strong></h1>
           <p>Organize seus estudos e acompanhe seu progresso</p>
         </div>
- 
+
         <section id="info-boxes" class="d-flex flex-wrap justify-content-around">
           <div class="box-info">
             <div class="iconbox">
@@ -82,31 +119,26 @@
           <div class="to-do-list-container">
             <div class="titulos d-flex w-100 justify-content-between align-items-center">
               <h3>Lista de Tarefas - Fokus</h3>
-     
+
             </div>
- 
             <form id="addForm" class="d-flex gap-2 mb-3 flex-wrap" onsubmit="return false">
-             
-              <input type="text" id="taskInput" class="form-control flex-grow-1" placeholder="Adicione uma tarefa..." />
-             
-            <div class="linha-opcoes">
-            <p class="label-text">Prioridade:</p>
-            <select id="taskPriority" class="form-select" aria-label="Prioridade">
-                <option value="Baixa">Baixa</option>
-                <option value="Média">Média</option>
-                <option value="Alta">Alta</option>
-            </select>
- 
-            <p class="label-text">Data:</p>
-            <input type="date" id="taskDate" class="form-control">
- 
-            <p class="label-text">Tempo:</p>
-            <input type="number" id="taskTime" class="form-control" placeholder="(minutos)">
-           </div>
-              <input type="text" id="taskNote" class="form-control flex-grow-1" placeholder="Observação (opcional)" />
-              <input type="text" id="taskMateria" class="form-control flex-grow-1" placeholder="Matéria">
-              <button id="addBtn" class="btn btn-primary btn-sm flex-grow-1 mt-3">Adicionar Tarefa</button>
-           </form>
+  <input type="text" id="taskInput" name="titulo" class="form-control flex-grow-1" placeholder="Adicione uma tarefa..." required />
+  <div class="linha-opcoes">
+    <p class="label-text">Prioridade:</p>
+    <select id="taskPriority" name="prioridade" class="form-select" aria-label="Prioridade">
+      <option value="Baixa">Baixa</option>
+      <option value="Média">Média</option>
+      <option value="Alta">Alta</option>
+    </select>
+    <p class="label-text">Data:</p>
+    <input type="date" id="taskDate" name="data_estudo" class="form-control">
+    <p class="label-text">Tempo:</p>
+    <input type="number" id="taskTime" name="tempo_min" class="form-control" placeholder="(minutos)" min="0">
+  </div>
+  <input type="text" id="taskNote" name="observacao" class="form-control flex-grow-1" placeholder="Observação (opcional)" />
+  <input type="text" id="taskMateria" name="materia" class="form-control flex-grow-1" placeholder="Matéria" />
+  <button id="addBtn" class="btn btn-primary btn-sm flex-grow-1 mt-3">Adicionar Tarefa</button>
+</form>
  
             <!-- LINHA ÚNICA: Atividades (esquerda)  —  Prioridade (direita com label acima) -->
             <section class="boxes mb-3">
@@ -169,8 +201,8 @@
       </div>
     </section>
   </main>
-
-  <?php include __DIR__ . "/layout/footer.php"; ?>
+ 
+     <?php include __DIR__ . "/layout/footer.php"; ?>
  
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

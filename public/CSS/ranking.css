@@ -1,0 +1,144 @@
+.ranking-card {
+  background: var(--card, #fff);
+  border-radius: var(--radius, 12px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow, 0 4px 14px rgba(0,0,0,0.08));
+  margin-top: 2rem;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ranking-table th,
+.ranking-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.ranking-table thead {
+  background: var(--bg, #f5f7fb);
+  font-weight: 600;
+  color: var(--text, #1f2937);
+}
+
+.ranking-table tbody tr:nth-child(odd) {
+  background: #f9fafb;
+}
+
+.ranking-table tbody tr:hover {
+  background: #eef2ff;
+}
+
+.ranking-table td:first-child {
+  font-weight: bold;
+  color: var(--primary, #2563eb); 
+}
+/* Ranking especial para top 3 */
+.ranking-table tr:nth-child(1) td {
+  font-weight: bold;
+  background: #fff7e6; /* dourado suave */
+}
+
+.ranking-table tr:nth-child(2) td {
+  font-weight: bold;
+  background: #f0f4f8; /* prata suave */
+}
+
+.ranking-table tr:nth-child(3) td {
+  font-weight: bold;
+  background: #fff0f0; /* bronze suave */
+}
+
+/* Avatar redondo */
+.ranking-table td img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Efeito ao carregar */
+.ranking-table tbody tr {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.4s ease forwards;
+}
+.ranking-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.ranking-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+.ranking-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Barra de progresso */
+.progress {
+  width: 100%;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #2563eb; /* Cor do progresso */
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+/* Efeito ao carregar */
+.ranking-table tbody tr {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.4s ease forwards;
+}
+.ranking-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.ranking-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+.ranking-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Linha do usuário logado */
+.ranking-table tr.highlight {
+  background: #e0f2fe !important;
+  font-weight: bold;
+  border-left: 4px solid var(--primary, #2563eb);
+}
+
+/* Avatar redondo */
+.ranking-table td img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Ranking especial para top 3 */
+.ranking-table tr:nth-child(1) td {
+  font-weight: bold;
+  background: #fff7e6; /* dourado suave */
+}
+
+.ranking-table tr:nth-child(2) td {
+  font-weight: bold;
+  background: #f0f4f8; /* prata suave */
+}
+
+.ranking-table tr:nth-child(3) td {
+  font-weight: bold;
+  background: #fff0f0; /* bronze suave */
+}
+/* Linha do usuário logado */
+.ranking-table tr.highlight {
+  background: #e0f2fe !important; 
+  font-weight: bold;
+  border-left: 4px solid var(--primary, #2563eb);
+}

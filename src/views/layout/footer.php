@@ -1,10 +1,10 @@
-  <footer class="text-center bg-body-tertiary">
+  <footer id="footer" class="text-center mt-auto">
   <!-- Grid container -->
   <div class="container pt-4">
     <!-- Section: Midias Sociais para contato -->
     <section class="mb-2">
 
-      <a
+      <a 
         data-mdb-ripple-init
         class="btn btn-link btn-floating btn-lg text-body m-1"
         href="#!"

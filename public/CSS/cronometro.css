@@ -1,0 +1,377 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+    list-style: none;
+}
+
+body {
+  background: #f8faff;
+  min-height: 100vh;
+  width: 100%;
+}
+
+
+.global {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 50px 100px;
+}
+
+.titulo {
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 80%; 
+}
+
+.titulo h1 {
+  margin-bottom: 10px;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.titulo p {
+  color: #666;
+  font-size: 18px;
+}
+
+main {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  width: 100%;
+}
+
+.cronometro {
+  background: #fff;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0px 7px 11px 2px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  width: 60%;
+}
+
+.timer {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}
+
+.timer h2, 
+.timer h3 {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.timer {
+  width: 280px;
+  height: 280px;
+  border: none; 
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+
+.timer h2 {
+  font-size: 50px;
+  font-family: "Roboto Mono", monospace;
+}
+
+.timer h3 {
+  color: #666;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.opcoes {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.opcoes button {
+  color: #1b61fc;
+  background: #f8fafc;
+  padding: 8px 15px;
+  border-radius: 12px;
+  border: 0.2px solid #e0edfe;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.opcoes button.active {
+  background: #1b61fc;
+  color: #fff;
+}
+
+.controle {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.controle button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 0 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 0.2px solid #e0edfe;
+  font-weight: 600;
+  background: #f8fafc;
+  color: #4e5766;
+}
+
+.start {
+  background-color: #1b61fc !important;
+  color: #fff !important;
+  transition: background 0.3s, color 0.3s;
+}
+
+.start.running-red {
+  background-color: #f44336 !important;
+  color: #fff !important;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 320px;
+}
+
+.conteiner {
+  background: linear-gradient(135deg, #ffffff, #f9faff);
+  border-radius: 20px;
+  padding: 25px 20px;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
+  border-left: 3px solid #1b61fc;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.conteiner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 12px 25px rgba(0,0,0,0.1);
+}
+
+.conteiner h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #1b61fc;
+}
+
+ion-icon {
+   margin-bottom: 20px;
+}
+
+.status p, .topicos p, .topicos li {
+  font-size: 15px;
+  color: #444;
+}
+
+.topicos ul {
+  padding-left: 18px;
+}
+
+.topicos li {
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.topicos li::before {
+  content: "✔";
+  color: #1b61fc;
+  font-weight: bold;
+  position: absolute;
+  left: -18px;
+}
+
+@media screen and (max-width: 1024px) {
+  .global {
+    padding: 40px 50px;
+  }
+
+  .cronometro {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timer {
+    width: 100%;
+    max-width: 240px;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .titulo {
+    width: 90%;
+    text-align: center;
+    margin-left: 0;
+  }
+
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cronometro {
+    width: 90%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timer {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 1 / 1;
+    font-size: 36px;
+  }
+
+  .timer h2 {
+    font-size: 40px;
+  }
+
+  aside {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .conteiner {
+    flex: 1 1 45%;
+    min-width: 200px;
+  }
+
+  .opcoes,
+  .controle {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .global {
+    padding: 20px 15px;
+  }
+
+  .titulo h1 {
+    font-size: 28px;
+  }
+
+  .titulo p {
+    font-size: 14px;
+  }
+
+  .cronometro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timer {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 1 / 1;
+    font-size: 28px;
+  }
+
+  .timer h2 {
+    font-size: 32px;
+  }
+
+  .controle p {
+    margin-top: 12px;
+  }
+
+  ion-icon {
+    margin-bottom: 20px !important;
+    margin-top: 14px;
+    
+  }
+
+  .opcoes button,
+  .controle button {
+    font-size: 14px;
+  }
+
+  .opcoes button {
+    padding: 6px 10px;
+  }
+
+  .controle button {
+    padding: 0 8px;
+    text-align: end;
+  }
+
+  aside {
+    width: 100%;
+  }
+}
+/*modo escuro pre-setado para algumas paginas*/
+
+.dark-mode .background {
+   background-color: #383434;
+}
+
+.dark-mode .cronometro {
+   background-color: #383434;
+}
+
+.dark-mode .conteiner {
+   background-color: #444; /* Cor de fundo mais apropriada para o modo escuro */
+   color: #fff; /* Alterar a cor do texto no modo escuro */
+}
+
+.dark-mode input {
+  background-color: #383434;
+  color: white;
+}
+
+.dark-mode input::placeholder {
+  color: white;
+}
+
+.dark-mode input:focus {
+  background-color: #383434;
+  color: white;            
+  border: 1px solid #888;  
+  outline: none;           
+}

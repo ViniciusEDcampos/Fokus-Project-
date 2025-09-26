@@ -2,6 +2,7 @@ const btnTema = document.getElementById('btn-tema');
 const navigation = document.getElementById('navigation');
 const userBox = document.querySelector('.user');
 const icon = btnTema.querySelector('i');
+const footer = document.getElementById('footer');
 
 // Função para aplicar o tema
 function applyTheme(mode) {
@@ -9,6 +10,7 @@ function applyTheme(mode) {
     document.body.classList.add('dark-mode');
     navigation.classList.add('dark-mode');
     userBox.classList.add('dark-mode');
+    footer.classList.add('dark-mode');
 
     icon.classList.remove('fi-rr-moon');
     icon.classList.add('fi-rr-sun');
@@ -17,6 +19,7 @@ function applyTheme(mode) {
     document.body.classList.remove('dark-mode');
     navigation.classList.remove('dark-mode');
     userBox.classList.remove('dark-mode');
+    footer.classList.remove('dark-mode')
 
     icon.classList.remove('fi-rr-sun');
     icon.classList.add('fi-rr-moon');

@@ -1,63 +1,12 @@
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  margin-top: 100px;
   background: #f5f7fb;
   color: #1f2937;
   transition: 0.3s;
+   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* DARK THEME */
-body.dark {
-  background: #1f2937;
-  color: #f9fafb;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-nav ul {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-nav a {
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  color: inherit;
-  text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s;
-}
-nav a:hover, nav a.active {
-  background: #2563eb;
-  color: #fff;
-}
-
-#theme-toggle {
-  border: none;
-  background: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-right: 1rem;
-}
-#theme-toggle:hover { transform: scale(1.2); }
-
-.user { display: flex; align-items: center; gap: 0.5rem; }
-.avatar {
-  background: #2563eb;
-  color: #fff;
-  border-radius: 50%;
-  padding: 0.5rem;
-}
 
 /* CONTEÚDO */
 .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
@@ -68,6 +17,7 @@ nav a:hover, nav a.active {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-style: hidden;
   padding: 1rem;
   margin-bottom: 1rem;
   transition: 0.2s;

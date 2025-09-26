@@ -1,0 +1,28 @@
+#footer .btn.btn-link.btn-floating:hover{
+  border-color: rgb(0, 0, 0) !important;
+box-shadow: none !important;
+}
+
+
+/* Tema noturno */
+#footer.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+  transition: 0.5s ease;
+}
+
+.container.dark-mode {
+  background-color: #1f1f1f;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+#footer.dark-mode a,
+#footer.dark-mode .text-body,
+#footer.dark-mode .btn.btn-link {
+  color: #e5e7eb !important;
+}
+
+#footer.dark-mode .btn.btn-link.btn-floating:hover{
+  border-color: white !important;
+  box-shadow: none !important;
+}

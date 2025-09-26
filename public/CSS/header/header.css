@@ -241,3 +241,22 @@ body.dark-mode {
   background-color: #1c4370;
 }
 
+#navigation.dark-mode .navmenu a,
+#navigation.dark-mode .navmenu a:visited {
+    color: #e5e7eb !important;
+}
+
+/* Parte do Usuario */
+
+nav.dark-mode .user span {
+    color: #ffffff !important; 
+}
+
+nav.dark-mode .user {
+    background-color: #333; 
+    color: white; 
+}
+
+nav.dark-mode .user .user-icon {
+    background-color: #444; /* Ícone de usuário com fundo mais escuro */
+}

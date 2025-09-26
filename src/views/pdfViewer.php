@@ -1,3 +1,37 @@
+<?php
+session_start();
+require __DIR__ . "/../config/db.php";
+
+/* 1) Exigir login */
+if (empty($_SESSION['id_usuario'])) {
+  header('Location: /src/views/login.php');
+  exit;
+}
+
+/* 2) Pegar id do usuário da sessão */
+$idUsuario = (int) $_SESSION['id_usuario'];
+
+/* 3) Nome do usuário: sessão -> banco -> fallback */
+$nome = $_SESSION['user_name'] ?? '';
+if ($nome === '') {
+  $stmt = $conn->prepare("SELECT nome FROM usuarios WHERE id_usuario = ? LIMIT 1");
+  $stmt->bind_param("i", $idUsuario);
+  $stmt->execute();
+  $nome = $stmt->get_result()->fetch_column() ?: 'Usuário';
+}
+
+/* 4) Primeiro nome bonito (com acentos) */
+$partes = preg_split('/\s+/', trim($nome));
+$primeiroNome = $partes[0] ?? 'Usuário';
+if (function_exists('mb_convert_case')) {
+  $primeiroNome = mb_convert_case($primeiroNome, MB_CASE_TITLE, 'UTF-8');
+} else {
+  $primeiroNome = ucwords(strtolower($primeiroNome));
+}
+$primeiroNome = htmlspecialchars($primeiroNome, ENT_QUOTES, 'UTF-8');
+
+require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,6 +45,7 @@
 <link rel="stylesheet" href="/public/CSS/material/bodyMaterial.css">
 <link rel="stylesheet" href="/public/CSS/header/header.css">
 <link rel="stylesheet" href="/public/CSS/style.css">
+<link rel="stylesheet" href="/public/CSS/footer/footer.css">
 
 <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -20,12 +55,12 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 <link rel="stylesheet" href="/src/views/layout/header.php">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
        <div class="background"></div>
        <?php include __DIR__ . "/layout/header.php"; ?>
 
- <main class="container-principal">
+<main class="container-principal flex-fill">
     <section id="home" class="container">
       <!-- wrapper central para não ficar colado na borda -->
       <div class="page-inner">
@@ -33,16 +68,19 @@
           <h1><i class="fi fi-rr-book-alt text-primary "></i><strong>Material de Estudo</strong><i class="fi fi-rr-graduation-cap text-primary"></i></h1>
           <p>Organize seus materiais de estudo em PDF. Upload arquivos, organize por matéria e tenha <br>acesso rápido ao seu conteúdo.</p>
         </div>
-
         
      <!-- PDF Viewer -->
     <div class="md-6">
       <h3>Estude com seu PDF</h3>
       <div class="">
       </div>
-      <input type="file" id="pdfUpload" accept="application/pdf" class="form-control mb-3">
+
+     <input type="file" id="pdfUpload" name="pdf" accept="application/pdf" class="form-control mb-3">
       <iframe id="pdfViewer" width="100%" height="600px" style="border: 1px solid #ccc; display: none;"></iframe>
     </div>
+     <button class="btn btn-primary mb-1 mt-3" onclick="abrirTelaCheia()">
+        <i class="fas fa-expand"></i> Tela Cheia
+     </button>
 
     <h4 id="tituloSegundario">Seus Materiais Recentes</h4>
     
@@ -50,8 +88,8 @@
 
     </section>
   </main>
-
-  <?php include __DIR__ . "/layout/footer.php"; ?>
+   
+     <?php include __DIR__ . "/layout/footer.php"; ?>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
