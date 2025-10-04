@@ -52,17 +52,16 @@ $stmt->close();
 $totalSemana = $totalSemana ?? 0;
 $totalHorasSemana = round($totalSemana / 3600, 1); // em horas
 
-// ----------------------
-// 2) Progresso diário (últimos 7 dias)
-// ----------------------
+//Progresso diário (últimos 7 dias) sempre atualizado
+
 $sqlDia = "
   SELECT DATE(data_hora) as dia, SUM(duracao_segundos) as total
   FROM sessoes_estudo
   WHERE id_usuario = ?
-  AND data_hora >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+  AND YEARWEEK(data_hora, 1) = YEARWEEK(CURDATE(), 1)
   GROUP BY DATE(data_hora)
   ORDER BY DATE(data_hora)
-";
+";;
 
 $stmt = $conn->prepare($sqlDia);
 $stmt->bind_param("i", $idUsuario);
@@ -92,6 +91,53 @@ $stmt->close();
 // ----------------------
 $meta = 30; // horas por semana
 $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
+
+
+$meses = 6; // últimos 6 meses
+
+$hoje = new DateTime();
+$primeiroDia = (clone $hoje)->modify("-$meses month")->modify('first day of this month')->format('Y-m-d');
+$ultimoDia = $hoje->format('Y-m-d');
+
+// Consulta as ações do usuário no período
+$sql = "
+    SELECT DATE(data_hora) AS dia, COUNT(*) AS total
+    FROM sessoes_estudo
+    WHERE id_usuario = ?
+    AND data_hora >= ? AND data_hora <= ?
+    GROUP BY DATE(data_hora)
+    ORDER BY DATE(data_hora)
+";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iss", $idUsuario, $primeiroDia, $ultimoDia);
+$stmt->execute();
+$res = $stmt->get_result();
+
+$atividades = [];
+while($row = $res->fetch_assoc()) {
+    $dia = $row['dia']; 
+    $atividades[$dia] = (int)$row['total']; // força inteiro
+}
+$stmt->close();
+
+$days = [];
+$period = new DatePeriod(
+    new DateTime($primeiroDia),
+    new DateInterval('P1D'),
+    (new DateTime($ultimoDia))->modify('+1 day')
+);
+
+foreach($period as $date) {
+    $diaStr = $date->format('Y-m-d');
+    $days[$diaStr] = $atividades[$diaStr] ?? 0; // 0 se não houver ação
+}
+// Prepara rótulos dos meses
+$mesLabels = [];
+foreach ($days as $dia => $total) {
+    $mes = date('M Y', strtotime($dia));
+    $mesLabels[$mes][] = $dia;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -102,6 +148,8 @@ $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
     <title>Fokus - Andamento</title>
     <link rel="stylesheet" href="/public/CSS/andamento.css">
     <link rel="stylesheet" href="/public/CSS/style.css">
+    <link rel="stylesheet" href="/public/CSS/header/header.css">
+     <link rel="stylesheet" href="/public/CSS/footer/footer.css">
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -112,7 +160,7 @@ $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-    <link rel="stylesheet" href="/public/CSS/header/header.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
@@ -120,9 +168,12 @@ $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 </head>
 
+
 <body>
-    <!-- NAVBAR -->
     <?php include __DIR__ . "/layout/header.php"; ?>
+
+    <div class="background"></div>
+
     <main class="container">
         <h1>Progresso dos Estudos</h1>
         <p class="subtitle">Acompanhe sua evolução e desempenho ao longo do tempo</p>
@@ -134,7 +185,7 @@ $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
             </div>
             <!-- Barra de progresso da meta -->
             <div class="progress-bar">
-                <span style="width: <?= $progressoGeral ?>%;"><?= $progressoGeral ?>%</span>
+                <span style="width: <?= $progressoGeral ?>%;"></span>
             </div>
             <div class="kpis">
                 <div class="kpi"><strong><?= $progressoGeral ?>%</strong><span>Progresso Geral</span></div>
@@ -166,6 +217,22 @@ $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
                 ?>
             </div>
         </section>
+        <section class="card">
+            <section class="grafico-meses">
+                <h2>Contrubuições nos ultimos 6 meses</h2>
+                <div class="meses-labels">
+                    <?php foreach (array_keys($mesLabels) as $mes): ?>
+                        <span class="mes-label"><?= $mes ?></span>
+                    <?php endforeach; ?>
+                </div>
+                <div class="grid-meses">
+                    <?php foreach ($days as $dia => $total): ?>
+                        <?php $cor = $total > 0 ? 'ativo' : 'inativo'; ?>
+                        <div class="dia <?= $cor ?>" title="<?= $dia ?> - <?= $total ?> ação(ões)"></div>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+        </section>
 
         <!-- RODAPÉ -->
         <section class="card highlight">
@@ -178,6 +245,14 @@ $progressoGeral = $meta > 0 ? round(($totalHorasSemana / $meta) * 100, 0) : 0;
             </div>
         </section>
     </main>
+    <?php include __DIR__ . "/layout/footer.php"; ?>
+    <!-- Bootstrap JS -->
+    
+    <!-- JS -->
+    <script src="/src/js/darkTheme.js"></script>
+    <script src="/src/js/background.js"></script>
 </body>
+
+</html>
 
 </html>

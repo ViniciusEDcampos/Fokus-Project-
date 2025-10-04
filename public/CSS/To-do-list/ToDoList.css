@@ -112,6 +112,15 @@ body {
 }
 .btn-edit:hover { background-color: #e0a800; }
  
+.box-info{
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.box-info:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 12px 25px rgba(0,0,0,0.1);
+}
+
 /* btn-danger custom */
 .btn-danger {
   background-color: #ff0000a1;
