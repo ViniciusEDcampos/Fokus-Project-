@@ -45,7 +45,7 @@ require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
 
 <!-- link com CSS -->
 
-<link rel="stylesheet" href="/public/CSS/pdfViewer/pdfViewer.css">
+<link rel="stylesheet" href="/public/CSS/To-do-list/ToDoList.css">
 <link rel="stylesheet" href="/public/CSS/header/header.css">
 <link rel="stylesheet" href="/public/CSS/style.css">
 <link rel="stylesheet" href="/public/CSS/footer/footer.css">
@@ -60,7 +60,7 @@ require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
 </head>
 <body>
  
-     <div class="background"></div>
+    <div class="background"></div>
     
     <?php include __DIR__ . "/layout/header.php"; ?>
  
@@ -140,12 +140,12 @@ require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
   <button id="addBtn" class="btn btn-primary btn-sm flex-grow-1 mt-3">Adicionar Tarefa</button>
 </form>
  
-            <!-- LINHA ÚNICA: Atividades (esquerda)  —  Prioridade (direita com label acima) -->
             <section class="boxes mb-3">
   <div id="filtros" class="card p-3 filters-card ">
     <div class="row gy-3 align-items-start">
-      <!-- Status (esquerda em desktop, 1ª linha no mobile) -->
-      <div class="col-12 col-lg-6">
+     
+    <!-- Status  -->
+       <div class="col-12 col-lg-6">
         <p class="label-text mb-2">Atividades Selecionadas:</p>
         <div class="btn-toolbar flex-wrap gap-2" role="toolbar" aria-label="Filtros de status">
           <div class="btn-group btn-group-sm flex-wrap w-100 w-sm-auto" role="group" id="boxPrioridades">
@@ -156,7 +156,7 @@ require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
         </div>
       </div>
  
-      <!-- Prioridade (direita em desktop, 2ª no mobile) -->
+      <!-- Prioridade -->
       <div class="col-12 col-lg-6">
         <p class="label-text mb-2">Nível de Prioridade:</p>
         <div class="btn-toolbar flex-wrap gap-2" role="toolbar" aria-label="Filtros de prioridade">
@@ -169,7 +169,7 @@ require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
         </div>
       </div>
  
-      <!-- Filtros avançados (linha inteira) -->
+      <!-- Filtros avançados -->
       <div class="col-12">
         <p class="label-text mb-2">Filtros Avançados:</p>
         <div class="row g-2">
@@ -188,8 +188,9 @@ require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
   </div>
 </section>
  
+
             <ul id="taskList" class="list-group"></ul>
- 
+            
             <div class="d-flex justify-content-between align-items-center mt-3 w-100">
               <div><span id="counter">0 tarefas</span></div>
               <div class="progress mt-2" style="height:10px; width:50%;">

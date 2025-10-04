@@ -1,0 +1,340 @@
+/* ------------------ RESET E TIPOGRAFIA ------------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  list-style: none;
+}
+ 
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #f9fafb; /* Fundo claro padrão */
+  color: #1e293b; /* Texto escuro */
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+ 
+/* ------------------ TEXTOS ------------------ */
+h1, h2, h3 {
+  color: #1e293b;
+  margin: 0.5em 0;
+}
+ 
+.highlight {
+  color: #3b82f6;
+}
+ 
+section {
+  padding: 3rem 2rem;
+}
+ 
+/* ------------------ HERO ------------------ */
+.hero {
+  text-align: center;
+  padding: 6rem 2rem;
+}
+ 
+.hero .tag {
+  display: inline-block;
+  background: #dbeafe;
+  color: #3b82f6;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+ 
+.hero h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+ 
+.hero p {
+  max-width: 600px;
+  margin: 1rem auto;
+  color: #475569;
+}
+ 
+/* ------------------ BOTÕES ------------------ */
+.buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+ 
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.3s, color 0.3s;
+}
+ 
+.btn:hover {
+  transform: scale(1.05);
+}
+ 
+.btn.primary {
+  background: #3b82f6 !important;
+  color: #fff;
+  border-radius: 64px;
+}
+ 
+/* ------------------ STATS ------------------ */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+ 
+.stats div {
+  min-width: 120px;
+  text-align: center;
+}
+ 
+/* ------------------ FEATURES ------------------ */
+.features {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.feature-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 900px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  font-size: 3rem;
+  background: rgba(0,0,0,0.05);
+  padding: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.feature-card.blue .feature-icon { color: #007bff; background: #e7f0ff; }
+.feature-card.green .feature-icon { color: #28a745; background: #e8f9f0; }
+.feature-card.purple .feature-icon { color: #6f42c1; background: #f4e8ff; }
+.feature-card.yellow .feature-icon { color: #ffc107; background: #fff9e6; }
+.feature-card.red .feature-icon { color: #dc3545; background: #ffe8e8; }
+
+.feature-text {
+  text-align: left;
+}
+ 
+/* ------------------ CTA ------------------ */
+.cta {
+  text-align: center;
+  padding: 2rem 3rem;
+  background: #b3d0ff70;
+  color: black;
+}
+ 
+.cta h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+ 
+.cta p {
+  color: black;
+  margin-bottom: 1.5rem;
+}
+ 
+.cta .btn {
+  background: #ffffff;
+  border-radius: 64px;
+}
+ 
+.cta .btn:hover {
+  background: #e0e7ff;
+}
+ 
+/* ------------------ FOOTER ------------------ */
+footer {
+  text-align: center;
+  background-color: #0f172a;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #f8fafc;
+}
+ 
+/* ------------------ RESPONSIVO ------------------ */
+@media (max-width: 1024px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+ 
+  .features h2 {
+    font-size: 1.8rem;
+  }
+ 
+  .stats {
+    gap: 1rem;
+  }
+}
+ 
+@media (max-width: 768px) {
+  .feature-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+ 
+  .feature-card .feature-text {
+    order: 2;
+  }
+ 
+  .feature-card .feature-image {
+    order: 1;
+  }
+ 
+  .feature-card .feature-image img {
+    margin: auto;
+  }
+}
+ 
+@media (max-width: 640px) {
+  .hero {
+    padding: 3rem 1rem;
+  }
+ 
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+ 
+  .buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+ 
+  .stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+ 
+  .features h2 {
+    font-size: 1.5rem;
+  }
+ 
+  .cta h2 {
+    font-size: 1.5rem;
+  }
+}
+ 
+/* ------------------ MODO ESCURO ------------------ */
+body.dark {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3 {
+  color: #f1f5f9;
+}
+
+body.dark .hero .tag,
+body.dark .feature-card .tag {
+  background: #1e3a8a;
+  color: #bfdbfe;
+}
+
+body.dark .hero p,
+body.dark .features p,
+body.dark .feature-card p {
+  color: #cbd5e1;
+}
+
+/* Feature Cards no Dark */
+body.dark .feature-card {
+  background: #1e293b;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  color: #f1f5f9;
+}
+
+body.dark .feature-card h3 {
+  color: #f9fafb;
+}
+
+body.dark .feature-card p {
+  color: #cbd5e1;
+}
+
+body.dark .feature-icon {
+  background: rgba(255,255,255,0.08);
+  color: #60a5fa;
+}
+
+/* CTA */
+body.dark .cta {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+body.dark .cta p {
+  color: #e2e8f0;
+}
+
+body.dark .cta .btn {
+  background: #f8fafc;
+  color: #1d4ed8;
+}
+
+body.dark .cta .btn:hover {
+  background: #e0e7ff;
+}
+
+/* Footer */
+body.dark footer {
+  background: #020617;
+  color: #cbd5e1;
+}
+
+/* Botões */
+body.dark .btn.primary {
+  background: #2563eb !important;
+  color: #fff !important;
+}
+
+/* ------------------ DARK MODE CORES ESPECÍFICAS ------------------ */
+body.dark .feature-card.blue .feature-icon { 
+  color: #60a5fa;
+  background: rgba(96,165,250,0.15); 
+}
+body.dark .feature-card.green .feature-icon { 
+  color: #34d399;
+  background: rgba(52,211,153,0.15); 
+}
+body.dark .feature-card.purple .feature-icon { 
+  color: #c084fc;
+  background: rgba(192,132,252,0.15); 
+}
+body.dark .feature-card.yellow .feature-icon { 
+  color: #facc15;
+  background: rgba(250,204,21,0.15); 
+}
+body.dark .feature-card.red .feature-icon { 
+  color: #f87171;
+  background: rgba(248,113,113,0.15); 
+}

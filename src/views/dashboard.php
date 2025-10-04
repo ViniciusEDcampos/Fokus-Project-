@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 require __DIR__ . "/../config/db.php";
@@ -31,55 +30,122 @@ if (function_exists('mb_convert_case')) {
 }
 $primeiroNome = htmlspecialchars($primeiroNome, ENT_QUOTES, 'UTF-8');
 
-require __DIR__ . "/../config/db.php"; // ajusta caminho se precisar
-/* === HORAS ESTUDADAS HOJE === */
-$sql = "SELECT SUM(duracao_segundos) AS total_min 
-        FROM sessoes_estudo 
-        WHERE id_usuario = ? AND DATE(data_hora) = CURDATE()";
-$stmt = $conn->prepare($sql);
+// --- Calculando as horas da semana atual ---
+
+$sqlSemana = "
+  SELECT SUM(duracao_segundos) as total_min
+  FROM sessoes_estudo
+  WHERE id_usuario = ? 
+  AND YEARWEEK(data_hora, 1) = YEARWEEK(CURDATE(), 1)
+";
+
+$stmt = $conn->prepare($sqlSemana);
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
 $res = $stmt->get_result()->fetch_assoc();
-$horasHoje = round(($res['total_min'] ?? 0) / 60, 1);
 
-/* === TAREFAS CONCLUÍDAS HOJE === */
-$sql = "SELECT 
-           SUM(CASE WHEN status='concluida' THEN 1 ELSE 0 END) AS concluidas,
-           COUNT(*) AS total
-        FROM tarefas
-        WHERE id_usuario = ? AND DATE(data_criacao) = CURDATE()";
-$stmt = $conn->prepare($sql);
+$horasSemana = round(($res['total_min'] ?? 0) / 3600, 1); // Convertendo segundos para horas
+
+$meta = 30; // A meta semanal é de 30 horas
+$pctSemana = min(($horasSemana / $meta) * 100, 100); // Calculando o progresso da meta semanal
+
+// --- Fim do cálculo de horas da semana atual ---
+
+// Consultando outras métricas, como tarefas e dias seguidos
+$sqlTarefas = "SELECT 
+                  SUM(CASE WHEN status='concluida' THEN 1 ELSE 0 END) AS concluidas,
+                  COUNT(*) AS total
+                FROM tarefas
+                WHERE id_usuario = ? AND DATE(data_criacao) = CURDATE()";
+
+$stmt = $conn->prepare($sqlTarefas);
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
 $res = $stmt->get_result()->fetch_assoc();
 $tarefasConcluidas = $res['concluidas'] ?? 0;
 $tarefasTotais     = $res['total'] ?? 0;
 
-/* === ÚLTIMAS SESSÕES DE ESTUDO === */
-$sql = "SELECT materia, duracao_segundos, data_hora
-        FROM sessoes_estudo 
-        WHERE id_usuario = ?
-        ORDER BY data_hora DESC 
-        LIMIT 4";
-$stmt = $conn->prepare($sql);
+// Calculando a posição do usuário no ranking
+$sqlPosicao = "
+  SELECT COUNT(*) + 1 AS posicao
+  FROM (
+      SELECT SUM(duracao_segundos) AS total
+      FROM sessoes_estudo
+      WHERE id_usuario != ?
+      GROUP BY id_usuario
+      HAVING total > (
+          SELECT COALESCE(SUM(duracao_segundos), 0)
+          FROM sessoes_estudo
+          WHERE id_usuario = ?
+      )
+  ) AS sub
+";
+$stmt = $conn->prepare($sqlPosicao);
+$stmt->bind_param("ii", $idUsuario, $idUsuario);
+$stmt->execute();
+$resPosicao = $stmt->get_result();
+$rowPosicao = $resPosicao->fetch_assoc();
+$posicaoUsuario = $rowPosicao['posicao'];
+$stmt->close();
+
+// Consultando os dias consecutivos de estudo
+$sqlDiasConsecutivos = "
+  SELECT DISTINCT DATE(data_hora) AS dia
+  FROM sessoes_estudo
+  WHERE id_usuario = ?
+  ORDER BY dia DESC
+";
+$stmt = $conn->prepare($sqlDiasConsecutivos);
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
-$ultimas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$resDias = $stmt->get_result();
 
-/* === CONQUISTAS DO USUÁRIO === */
-$sql = "SELECT c.nome, c.descricao, uc.data_alcance
-        FROM usuarios_conquistas uc
-        JOIN conquistas c ON c.id_conquista = uc.id_conquista
-        WHERE uc.id_usuario = ?";
-$stmt = $conn->prepare($sql);
+$datas = [];
+while ($row = $resDias->fetch_assoc()) {
+  $datas[] = $row['dia'];
+}
+$stmt->close();
+
+// Calculando dias consecutivos
+$streakAtual = 0;
+$maxStreak = 0;
+$atual = 1;
+
+for ($i = 1; $i < count($datas); $i++) {
+  $diaAnterior = new DateTime($datas[$i - 1]);
+  $diaAtual = new DateTime($datas[$i]);
+  $diff = $diaAnterior->diff($diaAtual)->days;
+
+  if ($diff === 1) {
+    $atual++;
+  } else {
+    $maxStreak = max($maxStreak, $atual);
+    $atual = 1;
+  }
+}
+
+$streakAtual = max($maxStreak, $atual); // Resultado final do streak
+
+// Progresso diário – horas estudadas hoje
+$sqlDia = "
+  SELECT SUM(duracao_segundos) AS total
+  FROM sessoes_estudo
+  WHERE id_usuario = ? 
+  AND DATE(data_hora) = CURDATE()
+";
+$stmt = $conn->prepare($sqlDia);
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
-$conquistas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-
+$res = $stmt->get_result()->fetch_assoc();
+$horasHoje = round(($res['total'] ?? 0) / 3600, 1); // em horas
+$stmt->close();
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,105 +154,88 @@ $conquistas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <link rel="stylesheet" href="/public/CSS/dashbord.css">
   <link rel="stylesheet" href="/public/CSS/header/header.css">
   <link rel="stylesheet" href="/public//CSS/style.css">
+  <link rel="stylesheet" href="/public/CSS/footer/footer.css">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-straight/css/uicons-regular-straight.css'>
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 
 </head>
+
 <body>
-<?php include __DIR__ . "/layout/header.php"; ?>
-<main class="container" style="margin-top:100px">
-  <h1>Bem-vindo de volta, <span style="color:#2563eb;">
-    <?php echo $primeiroNome; ?>
-  </span>!</h1>
-  <p class="subtitle">Aqui está um resumo do seu progresso nos estudos</p>
+  <?php include __DIR__ . "/layout/header.php"; ?>
 
-  <!-- MÉTRICAS -->
-  <section class="grid">
-    <div class="card metric"><strong><?php echo $horasHoje; ?>h</strong><span>Estudadas Hoje</span></div>
-    <div class="card metric"><strong><?php echo "$tarefasConcluidas/$tarefasTotais"; ?></strong><span>Tarefas Hoje</span></div>
-    <div class="card metric"><strong>—</strong><span>Dias Seguidos (a implementar)</span></div>
-    <div class="card metric"><strong>—</strong><span>Posição Ranking</span></div>
-  </section>
+  <!-- fundo animado -->
+  <div class="background"></div>
 
-  <!-- PROGRESSOS -->
-  <section class="card">
-    <h2>Meta Semanal</h2>
-    <p>Progresso da sua meta de 30 horas por semana</p>
-    <?php 
-      $sql = "SELECT SUM(duracao_segundos) AS total_min 
-              FROM sessoes_estudo 
-              WHERE id_usuario = ? 
-              AND YEARWEEK(data_hora, 1) = YEARWEEK(CURDATE(), 1)";
-      $stmt = $conn->prepare($sql);
-      $stmt->bind_param("i", $idUsuario);
-      $stmt->execute();
-      $res = $stmt->get_result()->fetch_assoc();
-      $horasSemana = round(($res['total_min'] ?? 0) / 60, 1);
-      $meta = 30;
-      $pctSemana = min(($horasSemana / $meta) * 100, 100);
-    ?>
-    <div class="progress-bar"><span style="width:<?php echo $pctSemana; ?>%"></span></div>
-    <small><?php echo $horasSemana; ?>h estudadas • faltam <?php echo max(0, $meta - $horasSemana); ?>h</small>
-  </section>
+  <main class="container">
+    <h1>Bem-vindo de volta, <span class="zoom-in" style="color:#2563eb;">
+        <?php echo $primeiroNome; ?>
+      </span>!</h1>
+    <p class="subtitle">Aqui está um resumo do seu progresso nos estudos</p>
 
-  <section class="card">
-    <h2>Progresso Diário</h2>
-    <p>Suas tarefas e atividades de hoje</p>
-    <?php 
+    <!-- MÉTRICAS -->
+    <section class="grid">
+      <div class="card metric"><strong><?php echo $horasHoje; ?>h</strong><span>Estudadas Hoje</span></div>
+      <div class="card metric"><strong><?php echo "$tarefasConcluidas/$tarefasTotais"; ?></strong><span>Tarefas Hoje</span></div>
+      <div class="card metric"><strong><?php echo "$streakAtual"; ?></strong><span>Dias Seguidos</span></div>
+      <div class="card metric"><strong><?php echo "$posicaoUsuario"; ?></strong><span>Posição Ranking</span></div>
+    </section>
+
+    <!-- PROGRESSOS -->
+    <section class="card">
+      <h2>Meta Semanal</h2>
+      <p>Progresso da sua meta de 30 horas por semana</p>
+      <div class="progress-bar">
+        <span style="width: <?php echo $pctSemana; ?>%"></span>
+      </div>
+      <small><?php echo $horasSemana; ?>h estudadas • faltam <?php echo max(0, $meta - $horasSemana); ?>h</small>
+    </section>
+
+    <section class="card">
+      <h2>Progresso Diário</h2>
+      <p>Suas tarefas e atividades de hoje</p>
+      <?php
       $pct = $tarefasTotais > 0 ? ($tarefasConcluidas / $tarefasTotais * 100) : 0;
-    ?>
-    <div class="progress-bar green"><span style="width:<?php echo $pct; ?>%"></span></div>
-    <small><?php echo "$tarefasConcluidas de $tarefasTotais tarefas concluídas"; ?></small>
-  </section>
-
-  <!-- GRID INFERIOR -->
-  <div class="grid">
-    <section class="card">
-      <h2>Atividade Recente</h2>
-      <ul class="list">
-        <?php foreach($ultimas as $u): ?>
-          <li>📘 <?php echo htmlspecialchars($u['materia']); ?> 
-            <span>
-              <?php 
-                echo floor($u['duracao_segundos']/60)."h ".($u['duracao_segundos']%60)."min";
-              ?>
-            </span>
-          </li>
-        <?php endforeach; ?>
-      </ul>
+      ?>
+      <div class="progress-bar green"><span style="width:<?php echo $pct; ?>%"></span></div>
+      <small><?php echo "$tarefasConcluidas de $tarefasTotais tarefas concluídas"; ?></small>
     </section>
 
-    <section class="card">
-      <h2>Conquistas</h2>
-      <ul class="list">
-        <?php if ($conquistas): ?>
-          <?php foreach($conquistas as $c): ?>
-            <li>🏆 <?php echo htmlspecialchars($c['nome']); ?>
-              <span>(<?php echo date('d/m/Y', strtotime($c['data_alcance'])); ?>)</span>
-            </li>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <li>Sem conquistas ainda 😅</li>
-        <?php endif; ?>
-      </ul>
-    </section>
+    <!-- GRID INFERIOR -->
+    <div class="grid">
+      <section class="card">
+        <h2>Atividade Recente</h2>
+        <ul class="list">
+            <li>Sem Atividades recentes Aindan 😅</li>
+        </ul>
+      </section>
 
-    <section class="card">
-      <h2>Ações Rápidas</h2>
-     <a href="/src/views/cronometro.php"><button class="btn blue">⏱ Iniciar Cronômetro</button></a>
-      <a href="/src/views/tarefas.php"><button class="btn green">➕ Adicionar Tarefa</button></a>
-    <a href="/src/views/andamento.php"> <button class="btn purple">📊 Ver Progresso</button></a>
-    </section>
-  </div>
-</main>
- <?php include __DIR__ . "/layout/footer.php"; ?>
-<script src="script.js"></script>
-<script src="/src/js/background.js"></script>
+      <section class="card">
+        <h2>Conquistas</h2>
+        <ul class="list">
+            <li>Sem conquistas ainda 😅</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Ações Rápidas</h2>
+        <a href="/src/views/cronometro.php"><button class="btn blue">⏱ Iniciar Cronômetro</button></a>
+        <a href="/src/views/tarefas.php"><button class="btn green">➕ Adicionar Tarefa</button></a>
+        <a href="/src/views/andamento.php"> <button class="btn purple">📊 Ver Progresso</button></a>
+      </section>
+    </div>
+  </main>
+  <?php include __DIR__ . "/layout/footer.php"; ?>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/src/js/script.js"></script>
+  <script src="/src/js/background.js"></script>
+  <script src="/src/js/darkTheme.js"></script>
+
 </body>
 
 </html>

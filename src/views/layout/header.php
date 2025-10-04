@@ -16,9 +16,9 @@ $usuarioNome = $_SESSION['usuario_nome'] ?? 'Estudante';
 <header>
   <nav id="navigation" class="navbar navbar-expand-lg px-4 fixed-top">
     <div class="nav-left">
-      <img src="/public/img/LogoIcon.png" id="imgLogo" alt="Logo">
+      <button id="btn-secret"><img src="/public/img/LogoIcon.png" id="imgLogo" alt="Logo"></button>
       <div class="LogoText">
-        <a href="#" class="logo" >Fokus</a>
+        <a href="/indexR.php" class="logo" >Fokus</a>
         <span>Plataforma de Estudos</span>
       </div>
     </div>
@@ -55,3 +55,5 @@ $usuarioNome = $_SESSION['usuario_nome'] ?? 'Estudante';
     </div>
   </nav>
 </header>
+
+    <script src="/src/js/script.js"></script>

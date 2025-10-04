@@ -32,8 +32,9 @@ body {
 
 .titulo h1 {
   margin-bottom: 10px;
-  font-size: 36px;
+  font-size: 50px;
   font-weight: 500;
+  font-weight: bold;
 }
 
 .titulo p {
@@ -356,8 +357,9 @@ ion-icon {
 }
 
 .dark-mode .conteiner {
-   background-color: #444; /* Cor de fundo mais apropriada para o modo escuro */
-   color: #fff; /* Alterar a cor do texto no modo escuro */
+  background: #444; /* substitui o gradiente claro */
+  color: #fff;
+  border-left-color: #1b61fc; /* mantém a linha lateral azul */
 }
 
 .dark-mode input {
@@ -374,4 +376,15 @@ ion-icon {
   color: white;            
   border: 1px solid #888;  
   outline: none;           
+}
+.dark-mode .conteiner p {
+  color: white;
+}
+
+.dark-mode .titulo p {
+  color: white;
+}
+
+.dark-mode h3{
+  color: white;
 }

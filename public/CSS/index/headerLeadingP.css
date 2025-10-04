@@ -1,4 +1,5 @@
 /* Cabeçalho */
+
 #navigation {
   display: flex;
   align-items: center;
@@ -6,7 +7,6 @@
   width: 100%;
   padding: 0px 40px;
   min-height: 70px;
-  top: 0;          
   box-sizing: border-box;
   background: var(--corBranco, #fff);
   box-shadow: 0 2px 5px rgba(0,0,0,.1);
@@ -106,14 +106,8 @@
   overflow: hidden;
 }
 
-#btn-secret{
-    border: none;
-    cursor: pointer;
-    background: none;
-}
-
 #btn-tema i {
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 22px;
   z-index: 1;
   position: relative;
@@ -126,7 +120,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background-image: url("/public/img/stars.png");
+  background-image: url("../img/stars.png");
   background-size: cover;
   background-position: center;
   opacity: 0;
@@ -183,27 +177,18 @@
   transition: 0.3s;
 }
 
-/*   mobile    */
-@media (max-width: 991px) {
+   mobile    
+/* @media (max-width: 991px) {}
   .navmenu {
     flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-  }
+    gap: 15px;{}
+    margin-top: 10px;{
+  } */
 
   .menu {
     display: flex;
   }
-
-  .nav-right span {
-    display: none;
-  }
-
-  #navigation {
-    flex-wrap: wrap;
-    padding: 20px 40px;
-  }
-
+  
 .user {
   display: flex;
   align-items: center;
@@ -217,9 +202,10 @@
   bottom: 20px;      
   right: 20px;       
   z-index: 1000;     
+    
 }
 
-}
+
 
 /* Tema noturno */
 body.dark-mode {
@@ -246,23 +232,93 @@ body.dark-mode {
 .user.dark-mode:hover{
   background-color: #1c4370;
 }
-
-#navigation.dark-mode .navmenu a,
-#navigation.dark-mode .navmenu a:visited {
-    color: #e5e7eb !important;
+.cards.dark-mode:hover{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #0073ff;
+  padding: 3px;
+  border-radius: 14px;
+} 
+*/
+:root {
+  --bg: #ffffff;
+  --text: #111827;
+  --primary: #2563eb;
+  --secondary: #6b7280;
 }
 
-/* Parte do Usuario */
-
-nav.dark-mode .user span {
-    color: #ffffff !important; 
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
 }
 
-nav.dark-mode .user {
-    background-color: #333; 
-    color: white; 
+/* Header */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background: #fff;
+  position: sticky;
+  top: 0;
 }
 
-nav.dark-mode .user .user-icon {
-    background-color: #444; /* Ícone de usuário com fundo mais escuro */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
+
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-text h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.logo-text span {
+  font-size: 0.8rem;
+  color: var(--secondary);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn.primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* Tema escuro */
+body.dark {
+  --bg: #111827;
+  --text: #f9fafb;
+  --secondary: #9ca3af;
+}
+
+body.dark .navbar {
+  background: #1f2937;
+
+}
+
