@@ -28,7 +28,6 @@ $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\') . '/';
 </head>
 
 <body>
-
   <header>
     <nav id="navigation" class="navbar navbar-expand-lg px-4 fixed-top">
       <div class="nav-left">
@@ -38,7 +37,7 @@ $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\') . '/';
           <span>Plataforma de Estudos</span>
         </div>
       </div>
-
+      
       <!--  Menu mobile -->
       <button class="navbar-toggler menu" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="bar .text-primary"></span>
