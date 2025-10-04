@@ -78,7 +78,6 @@ O **Projeto Fokus** foi desenvolvido por uma equipe dedicada de estudantes apaix
 - **Lívia Eduarda**
 - **Eduardo Queiroz**
 - **Henrique Petrus**
-- 
 > Juntos, contribuímos para criar um sistema funcional, moderno e intuitivo, unindo nossas habilidades em programação, design e organização.
 
 ## Como Executar o Projeto
