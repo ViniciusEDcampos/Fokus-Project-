@@ -1,5 +1,7 @@
 # Projeto Fokus
 
+Teste Nosso Projeto: https://fokus.rf.gd/
+
 ## Descrição
 
 O **Fokus** é um sistema web desenvolvido com o objetivo de auxiliar estudantes a focarem em seus estudos, unindo funcionalidades práticas e uma interface intuitiva.
