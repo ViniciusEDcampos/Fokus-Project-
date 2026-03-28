@@ -89,7 +89,7 @@ O sistema é composto por:
 ![Ranking Claro](assets/telaRankingFokus.png)
 
 **Gestão de Materiais de Estudo**
-![Material PDF](assets/telaPDFFokus.png)
+![Material PDF](assets/telaPDFokus.png)
 
 ---
 
