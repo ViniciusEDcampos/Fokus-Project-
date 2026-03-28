@@ -1,7 +1,5 @@
 # Projeto Fokus
 
-Teste Nosso Projeto: https://fokus.rf.gd/
-
 ## Descrição
 
 O **Fokus** é um sistema web desenvolvido com o objetivo de auxiliar estudantes a focarem em seus estudos, unindo funcionalidades práticas e uma interface intuitiva.
@@ -16,7 +14,7 @@ O sistema é composto por:
 * **Ranking:** Sistema de pontuação para estimular a competitividade saudável entre usuários.
 * **Andamento:** Um dashboard mais detalhado com acesso a Metas, Contribuições e seu Progresso por inteiro.
 * **Interface responsiva:** Design moderno e atrativo, adequado para dispositivos móveis e desktop.
-
+  
 ---
 
 ## Funcionalidades do Sistema
@@ -71,6 +69,30 @@ O sistema é composto por:
 
 ---
 
+## Demonstração da Interface
+
+*(Nota: O sistema possui suporte completo para Tema Claro e Tema Escuro)*
+
+**Dashboard Principal**
+![Dashboard Claro](assets/telaInicialFokus.png)
+![Dashboard Escuro](assets/telaInicialFokusBlack.png)
+
+**Cronômetro Pomodoro em Ação**
+![Cronômetro Claro](assets/telaCronometroFokus.png)
+![Cronômetro Escuro](assets/telaCronometroFokusBlack.png)
+
+**Gerenciador de Tarefas e Filtros**
+![Tarefas Claro](assets/telaToDoListFokus.png)
+![Tarefas Escuro](assets/telaToDoListFokusBlack.png)
+
+**Ranking de Usuários (Gamificação)**
+![Ranking Claro](assets/telaRankingFokus.png)
+
+**Gestão de Materiais de Estudo**
+![Material PDF](assets/telaPDFFokus.png)
+
+---
+
 ## Equipe do Projeto
 O **Projeto Fokus** foi desenvolvido por uma equipe dedicada de estudantes apaixonados por tecnologia e aprendizado colaborativo:
 
@@ -80,9 +102,6 @@ O **Projeto Fokus** foi desenvolvido por uma equipe dedicada de estudantes apaix
 - **Henrique Petrus**
 > Juntos, contribuímos para criar um sistema funcional, moderno e intuitivo, unindo nossas habilidades em programação, design e organização.
 
-## Como Executar o Projeto
-
-1. Abra o Link: https://fokus.rf.gd/ 
 ---
 
 ## Tecnologias Utilizadas
